@@ -1,0 +1,99 @@
+class BankAccount {
+    // Private instance variables
+    private String accountNumber;
+    private String accountHolderName;
+    private double balance;
+
+    // Static variables
+    private static int totalAccounts = 0;
+    private static int accountCounter = 0;
+
+    // Constructor
+    public BankAccount(String accountHolderName, double initialDeposit) {
+        if (initialDeposit < 0) {
+            System.out.println("Initial deposit cannot be negative. Setting balance to 0.");
+            initialDeposit = 0;
+        }
+        this.accountHolderName = accountHolderName;
+        this.balance = initialDeposit;
+        this.accountNumber = generateAccountNumber();
+        totalAccounts++;
+    }
+
+    // Deposit method
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            System.out.println("Deposit amount must be positive!");
+            return;
+        }
+        balance += amount;
+        System.out.println("Deposited: " + amount + " to " + accountNumber);
+    }
+
+    // Withdraw method
+    public void withdraw(double amount) {
+        if (amount <= 0) {
+            System.out.println("Withdrawal amount must be positive!");
+            return;
+        }
+        if (amount > balance) {
+            System.out.println("Insufficient funds in account: " + accountNumber);
+            return;
+        }
+        balance -= amount;
+        System.out.println("Withdrew: " + amount + " from " + accountNumber);
+    }
+
+    // Check balance method
+    public double checkBalance() {
+        return balance;
+    }
+
+    // Display account info
+    public void displayAccountInfo() {
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Account Holder: " + accountHolderName);
+        System.out.println("Balance: " + balance);
+        System.out.println("-----------------------------");
+    }
+
+    // Static method: Get total accounts
+    public static int getTotalAccounts() {
+        return totalAccounts;
+    }
+
+    // Static method: Generate unique account number
+    private static String generateAccountNumber() {
+        accountCounter++;
+        return String.format("ACC%03d", accountCounter);  // ACC001, ACC002, ...
+    }
+}
+
+public class BankSystem {
+    public static void main(String[] args) {
+        // Array to hold bank accounts (no collections allowed)
+        BankAccount[] accounts = new BankAccount[5];
+        int accountCount = 0;
+
+        // Creating accounts
+        accounts[accountCount++] = new BankAccount("Alice", 1000);
+        accounts[accountCount++] = new BankAccount("Bob", 500);
+        accounts[accountCount++] = new BankAccount("Charlie", 2000);
+
+        // Perform transactions
+        accounts[0].deposit(500);   // Alice deposits
+        accounts[1].withdraw(200);  // Bob withdraws
+        accounts[2].withdraw(2500); // Charlie tries to over-withdraw
+
+        // Display all accounts
+        System.out.println("\n--- Account Information ---");
+        for (int i = 0; i < accountCount; i++) {
+            accounts[i].displayAccountInfo();
+        }
+
+        // Show static vs instance
+        System.out.println("Total accounts created: " + BankAccount.getTotalAccounts());
+        System.out.println("Alice's Balance: " + accounts[0].checkBalance());
+        System.out.println("Bob's Balance: " + accounts[1].checkBalance());
+    }
+}

@@ -1,0 +1,15 @@
+class numberprinter extends Thread {
+    @Override
+    public void run() {
+        for (int i = 1; i <= 10; i++) {
+            System.out.println("Number: " + i);
+        }
+    }
+}
+
+public class threadexample {
+    public static void main(String[] args) {
+        numberprinter t1 = new numberprinter();
+        t1.start();
+    }
+}
